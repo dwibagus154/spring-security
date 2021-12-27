@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @Log4j2
@@ -22,5 +24,10 @@ public class AdminServiceImpl implements AdminService {
         System.out.println(user.getUsername());
         user.setActive(true);
         userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getAllUser(){
+        return userRepository.findAll();
     }
 }

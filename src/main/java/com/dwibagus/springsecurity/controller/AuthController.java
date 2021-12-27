@@ -1,12 +1,15 @@
 package com.dwibagus.springsecurity.controller;
 
 
+import com.dwibagus.springsecurity.model.User;
 import com.dwibagus.springsecurity.payload.UsernamePassword;
 import com.dwibagus.springsecurity.service.AdminService;
 import com.dwibagus.springsecurity.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,6 +45,11 @@ public class AuthController {
         System.out.println(id);
         adminService.userActivate(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/user")
+    public List<User> getAllUser(){
+        return adminService.getAllUser();
     }
 
 }
