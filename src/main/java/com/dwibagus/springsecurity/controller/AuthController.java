@@ -52,4 +52,11 @@ public class AuthController {
         return adminService.getAllUser();
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Long id){
+        System.out.println(id);
+        User user =  adminService.getUser(id);
+        return ResponseEntity.ok(user);
+    }
+
 }

@@ -7,4 +7,6 @@ import java.util.List;
 public interface AdminService {
     void userActivate(Long id);
     List<User> getAllUser();
+
+    User getUser(Long id);
 }

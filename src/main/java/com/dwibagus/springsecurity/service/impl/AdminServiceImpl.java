@@ -30,4 +30,11 @@ public class AdminServiceImpl implements AdminService {
     public List<User> getAllUser(){
         return userRepository.findAll();
     }
+
+    @Override
+    public User getUser(Long id){
+        User user = userRepository.findById(id).get();
+        System.out.println(user.getUsername());
+        return user;
+    }
 }
