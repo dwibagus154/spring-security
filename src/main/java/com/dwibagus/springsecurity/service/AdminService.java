@@ -5,7 +5,7 @@ import com.dwibagus.springsecurity.model.User;
 import java.util.List;
 
 public interface AdminService {
-    void userActivate(Long id);
+    User userActivate(Long id);
     List<User> getAllUser();
 
     User getUser(Long id);

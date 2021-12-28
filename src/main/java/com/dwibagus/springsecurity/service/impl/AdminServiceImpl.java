@@ -19,11 +19,12 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public void userActivate(Long id){
-        User user = userRepository.getById(id);
+    public User userActivate(Long id){
+        User user = userRepository.findById(id).get();
         System.out.println(user.getUsername());
         user.setActive(true);
         userRepository.save(user);
+        return user;
     }
 
     @Override
