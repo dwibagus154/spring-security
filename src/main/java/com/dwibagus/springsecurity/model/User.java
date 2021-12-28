@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
 
 @Data
@@ -21,6 +22,11 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Integer isAdmin;
+    private Date created_at = new Date();
+    private Date updated_at = new Date();
+
+
+
     @Column(columnDefinition = "boolean default false")
     private boolean active = false;
 
@@ -48,6 +54,8 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return active;
     }
+
+
 
 
 }

@@ -6,6 +6,7 @@ import com.dwibagus.springsecurity.payload.UsernamePassword;
 import com.dwibagus.springsecurity.service.AdminService;
 import com.dwibagus.springsecurity.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +30,9 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UsernamePassword req) {
-        authService.register(req);
-        return ResponseEntity.ok().build();
+    public User register(@RequestBody UsernamePassword req) {
+        User user = authService.register(req);
+        return user;
     }
 
     @PostMapping("/token")
@@ -56,7 +57,7 @@ public class AuthController {
     public ResponseEntity<User> getUser(@PathVariable Long id){
         System.out.println(id);
         User user =  adminService.getUser(id);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.  ok(user);
     }
 
 }
