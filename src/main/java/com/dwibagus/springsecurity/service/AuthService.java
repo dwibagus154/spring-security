@@ -7,4 +7,6 @@ import com.dwibagus.springsecurity.payload.UsernamePassword;
 public interface AuthService {
     User register(UsernamePassword req);
     TokenResponse generateToken(UsernamePassword req);
+
+//    User loginMember(UsernamePassword req);
 }

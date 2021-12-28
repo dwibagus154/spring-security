@@ -9,6 +9,7 @@ import com.dwibagus.springsecurity.service.AdminService;
 import com.dwibagus.springsecurity.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +36,18 @@ public class AuthController {
 
     @PostMapping("/register")
     public CommonResponse<User> register(@RequestBody UsernamePassword req) {
-        User user = authService.register(req);
-        return commonResponseGenerator.successResponse(user, "success register");
+        try{
+            User user = authService.register(req);
+            return commonResponseGenerator.response(user, "success register", "200");
+        }catch (Exception e){
+            return commonResponseGenerator.response(null, e.getMessage() ,"403");
+        }
     }
+
+//    @PostMapping("/member/login")
+//    public ResponseEntity<?> loginMember(@RequestBody UsernamePassword req) {
+//        return ResponseEntity.ok(authService.loginMember(req));
+//    }
 
     @PostMapping("/token")
     public ResponseEntity<?> generateToken(@RequestBody UsernamePassword req) {
@@ -49,19 +59,39 @@ public class AuthController {
         System.out.println("contoh");
         System.out.println(id);
         User user = adminService.userActivate(id);
-        return commonResponseGenerator.successResponse(user, "user activated");
+        return commonResponseGenerator.response(user, "user activated", "200");
+//        try {
+//            User user = adminService.userActivate(id);
+//            return commonResponseGenerator.response(user, "user activated", "200");
+//        }catch (Exception e){
+//            return commonResponseGenerator.response(null, e.getMessage() ,"403");
+//        }
     }
 
     @GetMapping("/user")
-    public CommonResponse<List<User>> getAllUser(){
-        return commonResponseGenerator.successResponse(adminService.getAllUser(), "get all user success");
+    public ResponseEntity<?> getAllUser(){
+        try {
+            return ResponseEntity.ok(commonResponseGenerator.response(adminService.getAllUser(), "get all user success", "200"));
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
+//    @GetMapping("/user")
+//    public ResponseEntity<List<User>> getAllUser(){
+//        return ResponseEntity.ok(new Response(adminService.getAllUser()));
+////        return commonResponseGenerator.response(adminService.getAllUser(), "get all user success", "200");
+//    }
 
     @GetMapping("/user/{id}")
-    public CommonResponse<User> getUser(@PathVariable Long id){
+    public ResponseEntity<?> getUser(@PathVariable Long id){
         System.out.println(id);
-        User user =  adminService.getUser(id);
-        return commonResponseGenerator.successResponse(user, "get user success");
+        try{
+            User user =  adminService.getUser(id);
+            return ResponseEntity.ok(commonResponseGenerator.response(user, "get user success", "200"));
+        }catch (Exception e){
+            return new ResponseEntity<>(commonResponseGenerator.response(null, "there is no user with id " + id, "400"),HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

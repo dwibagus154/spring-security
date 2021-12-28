@@ -62,4 +62,9 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+//    @Override
+//    public User loginMember(UsernamePassword req){
+//        User user = userRepository.find
+//    }
+
 }
