@@ -1,12 +1,15 @@
 package com.dwibagus.springsecurity.service;
 
 import com.dwibagus.springsecurity.model.User;
+import com.dwibagus.springsecurity.payload.LoginRequest;
 import com.dwibagus.springsecurity.payload.TokenResponse;
+import com.dwibagus.springsecurity.payload.UserResponse;
 import com.dwibagus.springsecurity.payload.UsernamePassword;
 
 public interface AuthService {
-    User register(UsernamePassword req);
-    TokenResponse generateToken(UsernamePassword req);
+    UserResponse createResponse(User user);
+    UserResponse register(UsernamePassword req);
+    TokenResponse generateToken(LoginRequest req);
 
-//    User loginMember(UsernamePassword req);
+    TokenResponse loginMember(LoginRequest req);
 }

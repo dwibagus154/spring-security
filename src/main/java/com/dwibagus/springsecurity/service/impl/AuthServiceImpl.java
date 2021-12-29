@@ -1,7 +1,9 @@
 package com.dwibagus.springsecurity.service.impl;
 
 import com.dwibagus.springsecurity.model.User;
+import com.dwibagus.springsecurity.payload.LoginRequest;
 import com.dwibagus.springsecurity.payload.TokenResponse;
+import com.dwibagus.springsecurity.payload.UserResponse;
 import com.dwibagus.springsecurity.payload.UsernamePassword;
 import com.dwibagus.springsecurity.repository.UserRepository;
 import com.dwibagus.springsecurity.security.JwtTokenProvider;
@@ -25,18 +27,36 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
+
     @Override
-    public User register(UsernamePassword req) {
+    public UserResponse createResponse(User user){
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setUsername(user.getUsername());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setIsAdmin(user.getIsAdmin());
+        userResponse.setActive(user.isActive());
+        userResponse.setCreated_at(user.getCreated_at());
+        userResponse.setUpdated_at(user.getUpdated_at());
+        return userResponse;
+    }
+
+    @Override
+    public UserResponse register(UsernamePassword req) {
         User user = new User();
         user.setUsername(req.getUsername());
         user.setPassword(passwordEncoder.encode(req.getPassword()));
         user.setEmail(req.getEmail());
         user.setIsAdmin(req.getIsAdmin());
-        return userRepository.save(user);
+        userRepository.save(user);
+
+//        create user response
+        UserResponse userResponse = this.createResponse(user);
+        return userResponse;
     }
 
     @Override
-    public TokenResponse generateToken(UsernamePassword req) {
+    public TokenResponse generateToken(LoginRequest req) {
         try {
             System.out.println("masuk sini");
             Authentication authentication = authenticationManager.authenticate(
@@ -62,9 +82,17 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-//    @Override
-//    public User loginMember(UsernamePassword req){
-//        User user = userRepository.find
-//    }
+    @Override
+    public TokenResponse loginMember(LoginRequest req){
+        User user = userRepository.getDistinctTopByUsername(req.getUsername());
+        System.out.println(user.getPassword());
+        Boolean isMatch = passwordEncoder.matches(req.getPassword(), user.getPassword());
+        TokenResponse tokenResponse = new TokenResponse();
+        if (isMatch){
+            return this.generateToken(req);
+        }else{
+            return null;
+        }
+    }
 
 }
